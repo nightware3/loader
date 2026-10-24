@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="nightware3.vcxproj" Id="43c69bd5-bfa7-4b15-ac28-91732ff9b1e2" />
+</Solution>

@@ -1,0 +1,14 @@
+.vs/
+out/
+build/
+debug_x64/
+release_x64/
+x64/
+*.user
+*.aps
+*.pdb
+*.obj
+*.log
+*.tlog
+*.lastbuildstate
+.git
