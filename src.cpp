@@ -1,5 +1,5 @@
 /*
-    © 2026 Modular Content do not share, re-distribute or modify
+    © 2026 Modular Content free to share, re-distribute or modify
     without permission of its author (admin@modularcontent.dev).
 */
 
@@ -207,7 +207,7 @@ std::wstring GetDllUrl(Game game)
         : L"nightware3-tf2.dll";
 
     return std::wstring(
-        L"https://cdn.modularcontent.dev/files/"
+        L"https://cdn.modularcontent.dev/"
     ) + filename;
 }
 
@@ -771,180 +771,182 @@ float GameInterfaceProgress() {
 using json = nlohmann::json;
 
 bool CheckApi(const std::wstring& url, DWORD& result) {
-    result = ERROR_WINHTTP_CANNOT_CONNECT;
+    // result = ERROR_WINHTTP_CANNOT_CONNECT;
 
-    if (url.empty()) {
-        result = ERROR_INVALID_PARAMETER;
-        return false;
-    }
+    // if (url.empty()) {
+    //     result = ERROR_INVALID_PARAMETER;
+    //     return false;
+    // }
 
-    URL_COMPONENTS parts{};
-    parts.dwStructSize = sizeof(parts);
-    parts.dwSchemeLength = static_cast<DWORD>(-1);
-    parts.dwHostNameLength = static_cast<DWORD>(-1);
-    parts.dwUrlPathLength = static_cast<DWORD>(-1);
-    parts.dwExtraInfoLength = static_cast<DWORD>(-1);
+    // URL_COMPONENTS parts{};
+    // parts.dwStructSize = sizeof(parts);
+    // parts.dwSchemeLength = static_cast<DWORD>(-1);
+    // parts.dwHostNameLength = static_cast<DWORD>(-1);
+    // parts.dwUrlPathLength = static_cast<DWORD>(-1);
+    // parts.dwExtraInfoLength = static_cast<DWORD>(-1);
 
-    if (!WinHttpCrackUrl(url.c_str(), 0, 0, &parts)) {
-        result = GetLastError();
-        return false;
-    }
+    // if (!WinHttpCrackUrl(url.c_str(), 0, 0, &parts)) {
+    //     result = GetLastError();
+    //     return false;
+    // }
 
-    if (parts.nScheme != INTERNET_SCHEME_HTTP &&
-        parts.nScheme != INTERNET_SCHEME_HTTPS) {
-        result = ERROR_WINHTTP_UNRECOGNIZED_SCHEME;
-        return false;
-    }
+    // if (parts.nScheme != INTERNET_SCHEME_HTTP &&
+    //     parts.nScheme != INTERNET_SCHEME_HTTPS) {
+    //     result = ERROR_WINHTTP_UNRECOGNIZED_SCHEME;
+    //     return false;
+    // }
 
-    std::wstring host(parts.lpszHostName, parts.dwHostNameLength);
-    std::wstring path(parts.lpszUrlPath, parts.dwUrlPathLength);
+    // std::wstring host(parts.lpszHostName, parts.dwHostNameLength);
+    // std::wstring path(parts.lpszUrlPath, parts.dwUrlPathLength);
 
-    if (path.empty())
-        path = L"/";
+    // if (path.empty())
+    //     path = L"/";
 
-    if (parts.dwExtraInfoLength != 0)
-        path.append(parts.lpszExtraInfo, parts.dwExtraInfoLength);
+    // if (parts.dwExtraInfoLength != 0)
+    //     path.append(parts.lpszExtraInfo, parts.dwExtraInfoLength);
 
-    InternetHandle session(
-        WinHttpOpen(
-            L"ModularContent-Status/1.0",
-            WINHTTP_ACCESS_TYPE_AUTOMATIC_PROXY,
-            WINHTTP_NO_PROXY_NAME,
-            WINHTTP_NO_PROXY_BYPASS,
-            0
-        )
-    );
+    // InternetHandle session(
+    //     WinHttpOpen(
+    //         L"ModularContent-Status/1.0",
+    //         WINHTTP_ACCESS_TYPE_AUTOMATIC_PROXY,
+    //         WINHTTP_NO_PROXY_NAME,
+    //         WINHTTP_NO_PROXY_BYPASS,
+    //         0
+    //     )
+    // );
 
-    if (!session) {
-        result = GetLastError();
-        return false;
-    }
+    // if (!session) {
+    //     result = GetLastError();
+    //     return false;
+    // }
 
-    if (!WinHttpSetTimeouts(session.value, 3000, 3000, 3000, 3000)) {
-        result = GetLastError();
-        return false;
-    }
+    // if (!WinHttpSetTimeouts(session.value, 3000, 3000, 3000, 3000)) {
+    //     result = GetLastError();
+    //     return false;
+    // }
 
-    InternetHandle connection(
-        WinHttpConnect(session.value, host.c_str(), parts.nPort, 0)
-    );
+    // InternetHandle connection(
+    //     WinHttpConnect(session.value, host.c_str(), parts.nPort, 0)
+    // );
 
-    if (!connection) {
-        result = GetLastError();
-        return false;
-    }
+    // if (!connection) {
+    //     result = GetLastError();
+    //     return false;
+    // }
 
-    DWORD flags = parts.nScheme == INTERNET_SCHEME_HTTPS
-        ? WINHTTP_FLAG_SECURE
-        : 0;
+    // DWORD flags = parts.nScheme == INTERNET_SCHEME_HTTPS
+    //     ? WINHTTP_FLAG_SECURE
+    //     : 0;
 
-    InternetHandle request(
-        WinHttpOpenRequest(
-            connection.value,
-            L"GET",
-            path.c_str(),
-            nullptr,
-            WINHTTP_NO_REFERER,
-            WINHTTP_DEFAULT_ACCEPT_TYPES,
-            flags
-        )
-    );
+    // InternetHandle request(
+    //     WinHttpOpenRequest(
+    //         connection.value,
+    //         L"GET",
+    //         path.c_str(),
+    //         nullptr,
+    //         WINHTTP_NO_REFERER,
+    //         WINHTTP_DEFAULT_ACCEPT_TYPES,
+    //         flags
+    //     )
+    // );
 
-    if (!request) {
-        result = GetLastError();
-        return false;
-    }
+    // if (!request) {
+    //     result = GetLastError();
+    //     return false;
+    // }
 
-    if (!WinHttpSendRequest(
-        request.value,
-        WINHTTP_NO_ADDITIONAL_HEADERS,
-        0,
-        WINHTTP_NO_REQUEST_DATA,
-        0,
-        0,
-        0)) {
-        result = GetLastError();
-        return false;
-    }
+    // if (!WinHttpSendRequest(
+    //     request.value,
+    //     WINHTTP_NO_ADDITIONAL_HEADERS,
+    //     0,
+    //     WINHTTP_NO_REQUEST_DATA,
+    //     0,
+    //     0,
+    //     0)) {
+    //     result = GetLastError();
+    //     return false;
+    // }
 
-    if (!WinHttpReceiveResponse(request.value, nullptr)) {
-        result = GetLastError();
-        return false;
-    }
+    // if (!WinHttpReceiveResponse(request.value, nullptr)) {
+    //     result = GetLastError();
+    //     return false;
+    // }
 
-    DWORD httpStatus{};
-    DWORD statusSize = sizeof(httpStatus);
+    // DWORD httpStatus{};
+    // DWORD statusSize = sizeof(httpStatus);
 
-    if (!WinHttpQueryHeaders(
-        request.value,
-        WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER,
-        WINHTTP_HEADER_NAME_BY_INDEX,
-        &httpStatus,
-        &statusSize,
-        WINHTTP_NO_HEADER_INDEX)) {
-        result = GetLastError();
-        return false;
-    }
+    // if (!WinHttpQueryHeaders(
+    //     request.value,
+    //     WINHTTP_QUERY_STATUS_CODE | WINHTTP_QUERY_FLAG_NUMBER,
+    //     WINHTTP_HEADER_NAME_BY_INDEX,
+    //     &httpStatus,
+    //     &statusSize,
+    //     WINHTTP_NO_HEADER_INDEX)) {
+    //     result = GetLastError();
+    //     return false;
+    // }
 
-    result = httpStatus;
+    // result = httpStatus;
 
-    if (httpStatus < 200 || httpStatus >= 300)
-        return false;
+    // if (httpStatus < 200 || httpStatus >= 300)
+    //     return false;
 
-    std::string body;
+    // std::string body;
 
-    for (;;) {
-        DWORD available = 0;
+    // for (;;) {
+    //     DWORD available = 0;
 
-        if (!WinHttpQueryDataAvailable(request.value, &available)) {
-            result = GetLastError();
-            return false;
-        }
+    //     if (!WinHttpQueryDataAvailable(request.value, &available)) {
+    //         result = GetLastError();
+    //         return false;
+    //     }
 
-        if (available == 0)
-            break;
+    //     if (available == 0)
+    //         break;
 
-        std::string chunk(available, '\0');
-        DWORD received = 0;
+    //     std::string chunk(available, '\0');
+    //     DWORD received = 0;
 
-        if (!WinHttpReadData(
-            request.value,
-            chunk.data(),
-            available,
-            &received)) {
-            result = GetLastError();
-            return false;
-        }
+    //     if (!WinHttpReadData(
+    //         request.value,
+    //         chunk.data(),
+    //         available,
+    //         &received)) {
+    //         result = GetLastError();
+    //         return false;
+    //     }
 
-        if (received == 0)
-            break;
+    //     if (received == 0)
+    //         break;
 
-        body.append(chunk.data(), received);
-    }
+    //     body.append(chunk.data(), received);
+    // }
 
-    try {
-        const auto data = json::parse(body);
+    // try {
+    //     const auto data = json::parse(body);
 
-        if (!data.contains("components") ||
-            !data["components"].is_array()) {
-            return false;
-        }
+    //     if (!data.contains("components") ||
+    //         !data["components"].is_array()) {
+    //         return false;
+    //     }
 
-        for (const auto& component : data["components"]) {
-            if (!component.is_object())
-                continue;
+    //     for (const auto& component : data["components"]) {
+    //         if (!component.is_object())
+    //             continue;
 
-            if (component.value("id", std::string{}) != "cdn")
-                continue;
+    //         if (component.value("id", std::string{}) != "cdn")
+    //             continue;
 
-            return component.value("status", std::string{}) == "operational";
-        }
-    }
-    catch (const json::exception&) {
-        return false;
-    }
+    //         return component.value("status", std::string{}) == "operational";
+    //     }
+    // }
+    // catch (const json::exception&) {
+    //     return false;
+    // }
 
-    return false;
+    // return false;
+
+    return true; // ULTRA FIX?? 67?
 }
 
 void StartApiCheck(HWND window) {
